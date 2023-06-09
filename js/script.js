@@ -32,7 +32,7 @@ guessButton.addEventListener("click", function (e) {
     if (goodInput) {
         makeGuess(goodInput);
     };
-    
+
     letterInput.value = ""; //clear input field
 });
 
@@ -57,5 +57,40 @@ const makeGuess = function (guess) {
     } else {
         guessedLetters.push(guess); //add letter to array
         console.log(guessedLetters);
+        guessedLettersDisplay();
+        updateWordProgress(guessedLetters);
+    };
+};
+
+const guessedLettersDisplay = function () {
+    guessedLettersElement.innerHTML = "";
+    for (letter of guessedLetters) {
+    const listItem = document.createElement("li");
+    listItem.innerText = letter;
+    guessedLettersElement.append(listItem);
+    };
+};
+
+const updateWordProgress = function (guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split(""); //splits word string into array of letters
+    console.log(wordArray);
+    const revealWord = []
+    //if the guessedLetters include a letter that is in the solution word array, add it to the revealWord array, if not, add a dot symbol in the revealWord array
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase())
+        } else {
+            revealWord.push("●");
+        };
+    };
+    wordInProgress.innerText = revealWord.join(""); //display the revealWord array as it loops through and updates after each guess
+    checkWin();
+};
+
+const checkWin = function () {
+    if (wordInProgress.innerText === word.toUpperCase()) {
+        guessMessage.classList.add("win");
+        guessMessage.innerHTML = `<p class="highlight">You guessed the word correctly! Congrats!</p>`;
     };
 };
