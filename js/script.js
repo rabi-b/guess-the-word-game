@@ -8,7 +8,7 @@ const guessMessage = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 let word = "magnolia" //test word before API setup
-const guessedLetters = []; //array to contain all guessed letters
+let guessedLetters = []; //array to contain all guessed letters
 let remainingGuesses = 8;
 
 const getWord = async function () {
@@ -115,6 +115,7 @@ const countRemainingGuesses = function (guess) {
 
     if (remainingGuesses === 0) {
         guessMessage.innerHTML = `Sorry, you have no more guesses. The word was <span class=highlight>${word}</span>.`;
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingGuessesSpan.innerText = `1 guess`;
     } else {
@@ -129,4 +130,25 @@ const checkWin = function () {
     };
 };
 
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remainingGuessesParagraph.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
+
+playAgainButton.addEventListener("click", function () {
+    //consider order of code lines
+    guessMessage.classList.remove("win");
+    remainingGuesses = 8;
+    guessedLetters = [];
+    remainingGuessesSpan.innerText = `${remainingGuesses} guesses`;
+    guessMessage.innerText = ""; //specify what
+    guessedLettersElement.innerHTML = ""; //specify what
+    getWord();
+    guessButton.classList.remove("hide");
+    remainingGuessesParagraph.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+});
 
